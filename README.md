@@ -31,16 +31,17 @@ Steps to run the evaluation
   * inside the BRITE directory
   * $ ./topogen.sh make (generate the BRITE topology)
 
-	user@user-VirtualBox:~/ccnx_evaluation/BRITE$ ./topogen.sh make
-	[DEBUG]  : Parser found Router Barabasi
-	[MESSAGE]: Placing 10 nodes...          DONE.
-	[MESSAGE]: Connecting Nodes...           DONE.
-	[MESSAGE]: Assigning Edge Bandwidth..3          DONE.
-	[MESSAGE]: Checking for connectivity:   Connected
-	[MESSAGE]: Exporting Topology in BRITE format to: topogen.brite
-	[MESSAGE]: Exporting random number seeds to seedfile
-	[MESSAGE]: Topology Generation Complete.
-
+```
+    user@user-VirtualBox:~/ccnx_evaluation/BRITE$ ./topogen.sh make
+    [DEBUG]  : Parser found Router Barabasi
+    [MESSAGE]: Placing 10 nodes...          DONE.
+    [MESSAGE]: Connecting Nodes...           DONE.
+    [MESSAGE]: Assigning Edge Bandwidth..3          DONE.
+    [MESSAGE]: Checking for connectivity:   Connected
+    [MESSAGE]: Exporting Topology in BRITE format to: topogen.brite
+    [MESSAGE]: Exporting random number seeds to seedfile
+    [MESSAGE]: Topology Generation Complete.
+```
   * $ ./topogen.sh convert (convert the BRITE topology to mininet configuration)
   * $ ./topogen.sh gem (generate the mininet topology for the simulation)
 
