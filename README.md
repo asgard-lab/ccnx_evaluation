@@ -23,7 +23,8 @@ Steps to run the evaluation
 
 5. type the following commands to autogenerate the topology in mininet
   * $ ./topogen.sh make (generate the BRITE topology)
-  * $ ./topogen.sh convert (convert the BRITE topology to mininet configuration)  * $ ./topogen.sh gem (generate the mininet topology for the simulation)
+  * $ ./topogen.sh convert (convert the BRITE topology to mininet configuration)
+  * $ ./topogen.sh gem (generate the mininet topology for the simulation)
 
 6. run the experiment
   * $ cd $MININET_DIR created by topogen.sh
