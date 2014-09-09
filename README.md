@@ -1,5 +1,6 @@
 CCNx Evaluation Project
+=======================
 
-Cesar Marcondes
-Denis Oliveira
-Emerson Barea
+*Cesar Marcondes
+*Denis Oliveira
+*Emerson Barea
