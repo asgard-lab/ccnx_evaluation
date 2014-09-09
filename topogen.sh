@@ -297,42 +297,7 @@ $(
 $(
 	for (( i=0; i<$EDGES; i++ ))
 	do
-		echo "node${src[ $i ]}:node${dst[ $i ]} bw=$( printf '%.3f' ${bw[ $i ]} ) delay=$( awk 'BEGIN { printf "%.4f", '${delay[ $i ]}' * 100 }' )ms"
-	done
-	for (( i=0; i<$HOSTS; i++ ))
-	do
-		echo "host$i:node${hosts[ $i ]} bw=1000"
-	done
-	for (( i=0; i<$SERVERS; i++ ))
-	do
-		echo "server$i:node${servers[ $i ]} bw=1000"
-	done
-)
-EOF
-
-
-	# MINICCNX
-cat > $MN_CCNX_FILE <<EOF
-[nodes]
-$(
-	for (( i=0; i<$NODES; i++ ))
-	do 
-		echo "node$i : _ cache=$MN_CACHE"
-	done
-	for (( i=0; i<$HOSTS; i++ ))
-	do 
-		echo "host$i : _"
-	done
-	for (( i=0; i<$SERVERS; i++ ))
-	do 
-		echo "server$i : _"
-	done
-)
-[links]
-$(
-	for (( i=0; i<$EDGES; i++ ))
-	do
-		echo "node${src[ $i ]}:node${dst[ $i ]} bw=${bw[ $i ]} delay=${delay[ $i ]}ms"
+		echo "node${src[ $i ]}:node${dst[ $i ]} bw=$( awk 'BEGIN { printf "%.f", '${bw[ $i ]}' * 100 }' ) delay=$( awk 'BEGIN { printf "%.4f", '${delay[ $i ]}' * 100 }' )ms"
 	done
 	for (( i=0; i<$HOSTS; i++ ))
 	do
@@ -347,7 +312,6 @@ EOF
 
 
 }
-
 
 num_to_ip() {
 	id=""
@@ -388,15 +352,9 @@ ln -s ../$MN_FILE $MN_DIR/miniccnx.conf
 
 cat > $MN_DIR/clean.sh <<EOF
 #!/bin/bash
- 
-pkill ccnd 
-pkill ospf 
-pkill zebra 
-pkill monkey
-pkill controller
- 
-rm -f log*
-rm -f */*log
+killall -9 ccnd ospf zebra
+rm log*
+rm */*log
 rm -rf /var/run/quagga-state/*
 EOF
 
@@ -444,7 +402,7 @@ EOF
 
 	for (( i=0; i<${#nodes[@]}; i++ ))
 	do
-		mkdir -p mn/${nodes[ $i ]}
+		mkdir -p $MN_DIR/${nodes[ $i ]}
 		
 		ln -s ../ospfn-start.sh $MN_DIR/${nodes[ $i ]}/ospfn-start.sh
 		ln -s ../routing.sh  $MN_DIR/${nodes[ $i ]}/routing.sh
@@ -459,11 +417,22 @@ password pwd
 enable password pwd
 log file ospfd.log
 !
+ ===block===
+!
 router ospf
  ospf router-id $id
+ redistribute connected
+ distribute-list ospfn out connected
  ===line===
+ capability opaque
 !
 line vty
+EOF
+
+
+cat > $MN_DIR/${nodes[ $i ]}/ospfn.conf  <<EOF
+ccnname /ccn/${nodes[ $i ]}.com/ 1
+logdir .
 EOF
 
 
@@ -550,143 +519,12 @@ EOF
 		for (( j=0; j<$nics; j++ ))
 		do
 		     sed -i '0,/===num/s/===num===/'$j'/' $MN_DIR/${nodes[ $i ]}/zebra.conf
+             sed -i 's/===block===/interface '${nodes[ $i ]}'-eth'$j'\n ===block===/' $MN_DIR/${nodes[ $i ]}/ospfd.conf
 		done
 
 		sed -i '/===block===/d' $MN_DIR/${nodes[ $i ]}/zebra.conf
+        sed -i '/ ===block===/d' $MN_DIR/${nodes[ $i ]}/ospfd.conf
 		sed -i '/ ===line===/d' $MN_DIR/${nodes[ $i ]}/ospfd.conf
-	done
-}
-
-gem_miniccnx() {
-	echo "Generating MiniCCNx"
-	
-	if [ -d $MN_CCNX_DIR ]
-	then
-		echo "Move mnccnx to mnccnx_old"
-		rm -rf $MN_CCNX_OLD_DIR
-		mv $MN_CCNX_DIR $MN_CCNX_OLD_DIR
-	fi
-
-	mkdir $MN_CCNX_DIR
-
-ln -s ../$MN_CCNX_FILE $MN_CCNX_DIR/miniccnx.conf
-
-cat > $MN_CCNX_DIR/clean.sh <<EOF
-#!/bin/bash
-killall -9 ccnd ospf zebra
-rm log*
-rm */*log
-rm -rf /var/run/quagga-state/*
-EOF
-
-
-cat > $MN_CCNX_DIR/ospfn-start.sh <<EOF
-#!/bin/bash
-ospfn -f ospfn.conf -d
-sleep 1
-EOF
-
-
-cat > $MN_CCNX_DIR/routing.sh <<EOF
-#!/bin/bash
-zebra -d -f zebra.conf -i /var/run/quagga-state/zebra.\$1.pid
-ospfd -f ospfd.conf -i /var/run/quagga-state/ospfd.\$1.pid -d -a
-EOF
-
-
-	chmod 755 $MN_CCNX_DIR/clean.sh
-	chmod 755 $MN_CCNX_DIR/ospfn-start.sh 
-	chmod 755 $MN_CCNX_DIR/routing.sh
-
-	CONTADOR=0
-
-	awk '{print $1}' $MN_CCNX_FILE > tmp
-	LINE=$(grep -n links tmp | cut -d : -f 1)
-
-	nodes=( $( head -n $(( $LINE - 1 )) tmp | tail -n $(( $LINE - 2)) ) )
-	links=( $( tail -n +$(( $LINE + 1 )) tmp ) )
-	
-	rm tmp
-
-	for (( i=0; i<${#nodes[@]}; i++ ))
-	do
-		mkdir -p $MN_CCNX_DIR/${nodes[ $i ]}
-		
-		ln -s ../ospfn-start.sh $MN_CCNX_DIR/${nodes[ $i ]}/ospfn-start.sh
-		ln -s ../routing.sh  $MN_CCNX_DIR/${nodes[ $i ]}/routing.sh
-
-		id=$( num_to_ip $CONTADOR )
-		(( CONTADOR++ ))
-
-
-cat > $MN_CCNX_DIR/${nodes[ $i ]}/ospfd.conf <<EOF
-hostname ${nodes[ $i ]}
-password pwd
-enable password pwd
-log file ospfd.log
-!
- ===block===
-!
-router ospf
- ospf router-id $id
- redistribute connected
- distribute-list ospfn out connected   
- ===line===
- capability opaque
-!
-line vty
-EOF
-
-
-cat > $MN_CCNX_DIR/${nodes[ $i ]}/ospfn.conf  <<EOF
-ccnname /ndn/${nodes[ $i ]}.com/ 1
-logdir .
-EOF
-
-
-cat > $MN_CCNX_DIR/${nodes[ $i ]}/zebra.conf <<EOF
-hostname ${nodes[ $i ]}
-password zebra
-enable password zebra
-
-log file zebra.log
-EOF
-
-
-	done
-
-	CONTADOR=0
-
-	for (( i=0; i<${#nodes[@]}; i++ ))
-	do
-
-		link=( $( echo ${links[@]} | tr ' ' '\n' | awk -F : '{if ($1 == "'${nodes[ $i ]}'") print $0}' ) )
-
-		for (( j=0; j<${#link[@]}; j++ ))
-		do
-			network=$( num_to_ip $CONTADOR )
-
-			link1=$( echo ${link[ $j ]} | cut -d : -f 1 )
-			link2=$( echo ${link[ $j ]} | cut -d : -f 2 )
-
-			sed -i 's/===line===/network '$network'\/30 area 0\n ===line===/' $MN_CCNX_DIR/$link1/ospfd.conf
-			sed -i 's/===line===/network '$network'\/30 area 0\n ===line===/' $MN_CCNX_DIR/$link2/ospfd.conf
-
-			(( CONTADOR+=4 ))
-		done
-	done
-	
-	for (( i=0; i<${#nodes[@]}; i++ ))
-	do
-		nics=$( grep -c network $MN_CCNX_DIR/${nodes[ $i ]}/ospfd.conf )
-
-		for (( j=0; j<$nics; j++ ))
-		do
-		     sed -i 's/===block===/interface '${nodes[ $i ]}'-eth'$j'\n ===block===/' $MN_CCNX_DIR/${nodes[ $i ]}/ospfd.conf	
-		done
-
-		sed -i '/ ===block===/d' $MN_CCNX_DIR/${nodes[ $i ]}/ospfd.conf
-		sed -i '/ ===line===/d' $MN_CCNX_DIR/${nodes[ $i ]}/ospfd.conf
 	done
 }
 
@@ -797,20 +635,13 @@ print_results_mininet() {
 	echo "Resultados Mininet"
 }
 
-print_results_miniccnx() {
-	echo "Resultados Miniccnx"
-}
-
 all() {
 	write_seed_file
 	write_conf
 	execute_brite
 	convert_brite
 	gem_mininet
-	gem_miniccnx
-	gem_surge
 	test_mininet
-	test_miniccnx
 }
 
 make() {
@@ -825,7 +656,6 @@ convert() {
 
 gem() {
 	gem_mininet
-#	gem_miniccnx
 	gem_surge
 }
 
@@ -855,21 +685,6 @@ clean() {
 
 	echo "Excluindo "$MN_OLD_DIR
 	rm -rf $MN_OLD_DIR
-
-	echo "Excluindo "$MN_CCNX_FILE
-	rm -f $MN_CCNX_FILE
-
-	echo "Ecluindo "$MN_CCNX_DIR
-	rm -rf $MN_CCNX_DIR
-
-	echo "Excluindo "$MN_CCNX_OLD_DIR
-	rm -rf $MN_CCNX_OLD_DIR
-
-	echo "Excluindo Surge Files"
-	rm -rf files
-
-	echo "Excluindo Surge Files from Monkey"
-	rm monkey/htdocs/*.txt
 }
 
 help() {
