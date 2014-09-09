@@ -16,7 +16,13 @@ Steps to run the evaluation
   * http://www.cs.bu.edu/brite/download.pl/BRITE.tar.gz (official link)
   * https://dl.dropboxusercontent.com/u/8102772/BRITE.tar.gz (fast alternative)
 
-3. untar and unzip the BRITE within the MiniCCNx VM
+3. Download the SURGE traffic generator tool
+  * Somewhat hard to find in the original website
+  * For convenience, there is an alternative copy here
+  * https://dl.dropboxusercontent.com/u/8102772/surge.tar.gz
+
+3. unzip and untar the BRITE within the MiniCCNx VM
+  * tar xzvf BRITE.tar.gz
 
 4. download the topogen.sh within the MiniCCNx VM
   * git clone https://github.com/asgard-lab/ccnx_evaluation.git
