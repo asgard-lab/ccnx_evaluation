@@ -43,6 +43,11 @@ Steps to run the evaluation
     [MESSAGE]: Topology Generation Complete.
 ```
   * $ ./topogen.sh convert (convert the BRITE topology to mininet configuration)
+
+```
+    user@user-VirtualBox:~/ccnx_evaluation/BRITE$ ./topogen.sh convert
+    Convertendo Brite
+```
   * $ ./topogen.sh gem (generate the mininet topology for the simulation)
 
 6. run the experiment
