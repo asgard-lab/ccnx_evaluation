@@ -42,14 +42,15 @@ Steps to run the evaluation
     [MESSAGE]: Exporting random number seeds to seedfile
     [MESSAGE]: Topology Generation Complete.
 ```
-  * $ ./topogen.sh convert (convert the BRITE topology to mininet configuration)
+6. Convert BRITE topology to mininet topology
+   * $ ./topogen.sh convert (convert the BRITE topology to mininet configuration)
 
 ```
     user@user-VirtualBox:~/ccnx_evaluation/BRITE$ ./topogen.sh convert
     Convertendo Brite
 ```
 
-6. Copy the surge directory inside BRITE dir (from VM, binaries should work)
+7. Copy the surge directory inside BRITE dir (from VM, binaries should work)
   * test if it works
 
 ```
@@ -58,7 +59,7 @@ Generating reference values...
 Total number of requests = 482
 ```
 
-7. Download and install the monkey web server (lightweight)
+8. Download and install the monkey web server (lightweight)
 
 ```
 $ wget http://monkey-project.com/releases/1.5/monkey-1.5.3.tar.gz
@@ -70,7 +71,7 @@ $ cd ..
 $ mv monkey-1.5.3 monkey
 ```
 
-8. Finish the topology and traffic generation setup
+9. Finish the topology and traffic generation setup
   * $ ./topogen.sh gem (generate the mininet topology for the simulation)
 
 ```
@@ -130,7 +131,7 @@ Generating files
 ... Surge files to mn ...
 ```
 
-9. run the experiment
+10. run the experiment
   * $ cd mn (inside BRITE, created by topogen.sh)
   * $ sudo miniccnx --testbed
 
@@ -158,5 +159,5 @@ OSPFN configuration completed!
 miniccnx>
 ```
 
-10. (Optional) if necessary clean the environment
+11. (Optional) if necessary clean the environment
   * $ ./topogen.sh clean
