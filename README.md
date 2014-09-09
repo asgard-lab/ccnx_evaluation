@@ -6,6 +6,7 @@ CCNx Evaluation Project
 * Emerson Barea
 
 Steps to run the evaluation
+
 1. Download the MiniCCNx VM
 https://www.dropbox.com/s/ph79hafzin3o630/Ubuntu_Mini-CCNx.zip
 
