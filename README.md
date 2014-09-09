@@ -15,22 +15,19 @@ we need a copy of the BRITE topology generator tool
 http://www.cs.bu.edu/brite/download.pl/BRITE.tar.gz (official link)
 https://dl.dropboxusercontent.com/u/8102772/BRITE.tar.gz (fast alternative)
 
-# desconpactar o BRITE
-# copiar o topogen.sh para dentro dele
+3. untar and unzip the BRITE within the MiniCCNx VM
 
-# Gera a Topologia BRITE
-$ ./topogen.sh make
+4. download the topogen.sh within the MiniCCNx VM
+git clone https://github.com/asgard-lab/ccnx_evaluation.git
 
-# Converte BRITE -> miniccnx.conf
-$ ./topogen.sh convert
+5. type the following commands to autogenerate the topology in mininet
+$ ./topogen.sh make (generate the BRITE topology)
+$ ./topogen.sh convert (convert the BRITE topology to mininet configuration)
+$ ./topogen.sh gem (generate the mininet topology for the simulation)
 
-# Gera estrutura mininet para simulação
-$ ./topogen.sh gem
-
-# Limpar ambiente
-$ ./topogen.sh clean
-
-OBS: utilizamos a vm pronta do miniccnx, para executar miniccnx
-entrar no diretório do mininet criado pelo topogen.sh
-
+6. run the experiment
+$ cd $MININET_DIR created by topogen.sh
 $ miniccnx --testbed
+
+7. (Optional) if necessary clean the environment
+$ ./topogen.sh clean
