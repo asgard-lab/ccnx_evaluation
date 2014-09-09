@@ -131,8 +131,32 @@ Generating files
 ```
 
 9. run the experiment
-  * $ cd $MININET_DIR created by topogen.sh
-  * $ miniccnx --testbed
+  * $ cd mn (inside BRITE, created by topogen.sh)
+  * $ sudo miniccnx --testbed
+
+```
+user@user-VirtualBox:~/ccnx_evaluation/BRITE/mn$ sudo miniccnx --testbed
+[sudo] password for user:
+Parse of miniccnx.conf done.
+*** Creating network
+*** Adding controller
+*** Adding hosts:
+host0 host1 host2 node0 node1 node2 node3 node4 node5 node6 node7 node8 node9 server0
+*** Adding switches:
+ 
+*** Adding links:
+(1000.00Mbit) (1000.00Mbit) (host0, node7) (1000.00Mbit) (1000.00Mbit) (host1, node5) (1000.00Mbit) (1000.00Mbit) (host2, node1) (103.00Mbit -100.0000ms delay) (103.00Mbit -100.0000ms delay) (node0, node1) (71.00Mbit -100.0000ms delay) (71.00Mbit -100.0000ms delay) (node0, node2) (28.00Mbit 0.0000ms delay) (28.00Mbit 0.0000ms delay) (node0, node7) (29.00Mbit -100.0000ms delay) (29.00Mbit -100.0000ms delay) (node1, node2) (65.00Mbit 0.0000ms delay) (65.00Mbit 0.0000ms delay) (node1, node3) (28.00Mbit 0.0000ms delay) (28.00Mbit 0.0000ms delay) (node1, node5) (84.00Mbit 0.0000ms delay) (84.00Mbit 0.0000ms delay) (node1, node8) (30.00Mbit 0.0000ms delay) (30.00Mbit 0.0000ms delay) (node1, node9) (50.00Mbit 0.0000ms delay) (50.00Mbit 0.0000ms delay) (node2, node3) (41.00Mbit 0.0000ms delay) (41.00Mbit 0.0000ms delay) (node2, node4) (87.00Mbit 0.0000ms delay) (87.00Mbit 0.0000ms delay) (node2, node6) (127.00Mbit 0.0000ms delay) (127.00Mbit 0.0000ms delay) (node3, node4) (82.00Mbit 0.0000ms delay) (82.00Mbit 0.0000ms delay) (node3, node5) (134.00Mbit 0.0000ms delay) (134.00Mbit 0.0000ms delay) (node3, node6) (118.00Mbit 0.0000ms delay) (118.00Mbit 0.0000ms delay) (node3, node7) (100.00Mbit 0.0000ms delay) (100.00Mbit 0.0000ms delay) (node4, node8) (62.00Mbit 0.0000ms delay) (62.00Mbit 0.0000ms delay) (node4, node9) (1000.00Mbit) (1000.00Mbit) (node6, server0)
+*** Configuring hosts
+host0 host1 host2 node0 node1 node2 node3 node4 node5 node6 node7 node8 node9 server0
+Setup time: 2
+*** Starting controller
+*** Starting 0 switches
+ 
+Starting OSPFN ...
+OSPFN configuration completed!
+*** Starting CLI:
+miniccnx>
+```
 
 10. (Optional) if necessary clean the environment
   * $ ./topogen.sh clean
