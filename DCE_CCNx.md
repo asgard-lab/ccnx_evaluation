@@ -31,8 +31,27 @@ apt-get upgrade
 And install all dependencies that will be needed:
 
 ```
-apt-get install build-essential qt-sdk python-dev libpcap-dev python-pygoocanvas python-pygraphviz bzr autoconf2.13 unzip unrar p7zip p7zip-rar cvs libboost-all-dev cmake git libdb-dev bison flex libssl-dev elfutils linux-headers-`uname -r` pkg-config gcc g++ libc6-dbg libxerces-c2-dev libpcre3-dev bison libtool libevent-dev gccxml python-pygccxml mercurial
+apt-get install build-essential qt-sdk python2.7-dev libpcap-dev python-pygoocanvas python-pygraphviz bzr autoconf2.13 unzip unrar p7zip p7zip-rar cvs libboost-all-dev cmake git libdb-dev bison flex libssl-dev elfutils linux-headers-`uname -r` pkg-config gcc g++ libc6-dbg libxerces-c2-dev libpcre3-dev bison libtool libevent-dev gccxml python-pygccxml mercurial
 ```
+Then, install WAF Framework
+```
+wget http://waf.googlecode.com/files/waf-1.6.11
+$ mv waf-1.6.11 waf
+$ python waf --version
+```
+Something like that will return: waf 1.6.11 (54dc13ba5f51bfe2ae277451ec5ac1d0a91c7aaf)
+
+Edit bashrc to most easy use of waf:
+```
+vim ~/.bashrc
+alias waf=`pwd`/waf
+
+```
+Update: 
+```
+source ~/.bashrc
+```
+
 
 ### 2.2 - Building DCE advanced mode (with Linux kernel)
 
@@ -58,6 +77,7 @@ cd dce
 
 bake.py configure -e dce-linux-1.4
 bake.py download
+bake.py check (check if all dependencies is ok)
 bake.py build
 ```
 
@@ -69,7 +89,10 @@ P.s: The entire procedure presented here was taken from the [NS-3 DCE](http://ww
 
 If you want to test your DCE instalation, you can try an example script that is in `$DCE_PATH/source/ns-3-dce/example/ccnx` directory. To run it you can use `waf` like the example bellow:
 
-`$DCE_PATH/source/ns-3-dce/./waf --run dce-ccnd-simple`
+`$DCE_PATH/source/ns-3-dce/waf --run dce-ccnd-simple`
+
+`$DCE_PATH/source/ns-3-dce/waf --run "dce-ccnd-simple kernel=1"` 
+(Using Kernel Stack on the simulation) 
 
 And go to `file-0` directory to look for all logs and outputs returned from the test.
 
