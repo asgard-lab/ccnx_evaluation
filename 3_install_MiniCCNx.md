@@ -56,7 +56,7 @@ cd /opt
 git clone git://github.com/carlosmscabral/mn-ccnx
 ```
 
-##### Replace the `/opt/mn-ccnx/util/install.sh` file for the `install.sh` file available [here](https://github.com/emersonbarea/testes/edit/master/install.sh). You need replace it because the original `install.sh` file only permit you install MiniCCNx in `/home/<user>` directory.
+##### Replace the `/opt/mn-ccnx/util/install.sh` file for the `install.sh` file available [here](https://github.com/asgard-lab/ccnx_evaluation/blob/master/install.sh). You need replace it because the original `install.sh` file only permit you install MiniCCNx in `/home/<user>` directory.
 
 Iinstall MiniCCNx.
 
@@ -101,4 +101,4 @@ make install
 ldconfig
 ```
 
-Now, you are able to continue installing others softwares needed. Continue [here](https://github.com/emersonbarea/testes/edit/master/4_install_FNSS.md).
+Now, you are able to continue installing others softwares needed. Continue [here](https://github.com/asgard-lab/ccnx_evaluation/blob/master/4_install_FNSS.md).
