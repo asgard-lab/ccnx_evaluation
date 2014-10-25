@@ -12,4 +12,4 @@ We used [Oracle VM VirtualBox](https://www.virtualbox.org/) to host the VM. We s
 - Processor: 2 or more cores
 - Network: 1 NIC (with Internet access)
 ```
-When you finished to create your Ubuntu VM, you can install all softwares needed. Start [here](https://github.com/emersonbarea/testes/blob/master/2_install_NS-3_DCE.md).
+When you finished to create your Ubuntu VM, you can install all softwares needed. Start [here](https://github.com/asgard-lab/ccnx_evaluation/blob/master/2_install_NS-3_DCE.md).
