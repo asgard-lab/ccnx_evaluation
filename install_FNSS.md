@@ -2,7 +2,7 @@
 
 [FNSS](http://fnss.github.io/) is a toolchain to setup a network experiment scenario.
 
-We will use `FNSS` to generate topology and traffic matrix in our emulated experiments (`MiniCCNx`) and simulated experiments (`NS-3 DCE`).
+We will use `FNSS` to generate topology and traffic matrix in our emulated experiments (MiniCCNx) and simulated experiments (NS-3 DCE).
 
 ## 4.1 - Install FNSS to emulate (FNSS core)
 
@@ -57,4 +57,4 @@ If all is done, test it.
 cd /opt/dce/source/ns-3.21/
 ./waf --run fnss-example
 ```
-Now, you finished all the installations needed. Go to [home](https://github.com/asgard-lab/ccnx_evaluation/master/4_install_.md) project.
+Now, you finished all the installations needed. Go to [home](https://github.com/asgard-lab/ccnx_evaluation/blob/master/VM_test.md) project.
